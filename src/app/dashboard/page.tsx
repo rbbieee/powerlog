@@ -45,6 +45,19 @@ export default function DashboardPage() {
       })
   }, [router])
 
+  const handleDelete = async (id: string) => {
+    const confirmed = window.confirm("Delete this workout? This cannot be undone.")
+    if (!confirmed) return
+
+    const response = await fetch(`/api/workouts/${id}`, {
+      method: "DELETE",
+    })
+
+    if (response.ok) {
+      setWorkouts(workouts.filter((workout) => workout.id !== id))
+    }
+  }
+
   return (
     <div className="min-h-screen bg-zinc-950 px-4 py-10">
       <div className="mx-auto max-w-2xl">
@@ -89,11 +102,25 @@ export default function DashboardPage() {
                     day: "numeric",
                   })}
                 </p>
-                {workout.note && (
-                  <p className="text-sm font-medium text-orange-500">
-                    {workout.note}
-                  </p>
-                )}
+                <div className="flex items-center gap-3">
+                  {workout.note && (
+                    <p className="text-sm font-medium text-orange-500">
+                      {workout.note}
+                    </p>
+                  )}
+                  <Link
+                    href={`/workouts/${workout.id}/edit`}
+                    className="text-xs text-zinc-600 hover:text-orange-500"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(workout.id)}
+                    className="text-xs text-zinc-600 hover:text-red-400"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-1">
