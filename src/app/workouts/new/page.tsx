@@ -156,7 +156,7 @@ export default function NewWorkoutPage() {
                   placeholder="Weight (kg)"
                   value={set.weight}
                   onChange={(e) => updateSet(index, "weight", e.target.value)}
-                  className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2 text-zinc-50 outline-none focus:border-orange-600"
+                  className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2 font-mono text-zinc-50 outline-none focus:border-orange-600"
                 />
                 <input
                   type="number"
@@ -164,7 +164,7 @@ export default function NewWorkoutPage() {
                   placeholder="Reps"
                   value={set.reps}
                   onChange={(e) => updateSet(index, "reps", e.target.value)}
-                  className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2 text-zinc-50 outline-none focus:border-orange-600"
+                  className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2 font-mono text-zinc-50 outline-none focus:border-orange-600"
                 />
                 <input
                   type="number"
@@ -172,7 +172,7 @@ export default function NewWorkoutPage() {
                   placeholder="RPE"
                   value={set.rpe}
                   onChange={(e) => updateSet(index, "rpe", e.target.value)}
-                  className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2 text-zinc-50 outline-none focus:border-orange-600"
+                  className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2 font-mono text-zinc-50 outline-none focus:border-orange-600"
                 />
               </div>
             </div>
