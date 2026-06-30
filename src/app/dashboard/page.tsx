@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { signOut } from "next-auth/react"
 
 type Set = {
   id: string
@@ -81,12 +82,20 @@ export default function DashboardPage() {
               Your workouts
             </h1>
           </div>
-          <Link
-            href="/workouts/new"
-            className="rounded bg-orange-600 px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-orange-500"
-          >
-            + Log workout
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/workouts/new"
+              className="rounded bg-orange-600 px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-orange-500"
+            >
+              + Log workout
+            </Link>
+            <button
+              onClick={() => signOut({ callbackUrl: "/login" })}
+              className="text-sm text-zinc-500 hover:text-zinc-300"
+            >
+              Log out
+            </button>
+          </div>
         </div>
 
         {!loading && workouts.length > 0 && (
