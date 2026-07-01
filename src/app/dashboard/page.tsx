@@ -4,6 +4,8 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { signOut } from "next-auth/react"
+import VolumeChart from "@/components/VolumeChart"
+import OneRMChart from "@/components/OneRMChart"
 
 type Set = {
   id: string
@@ -131,6 +133,13 @@ export default function DashboardPage() {
             <p className="text-zinc-500">
               No workouts yet. Log your first one to get started.
             </p>
+          </div>
+        )}
+
+        {workouts.length > 0 && (
+          <div className="mt-8 space-y-3">
+            <VolumeChart workouts={workouts} />
+            <OneRMChart workouts={workouts} />
           </div>
         )}
 
