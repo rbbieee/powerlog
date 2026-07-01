@@ -109,6 +109,12 @@ export default function DashboardPage() {
             >
               + Log workout
             </Link>
+            <Link
+              href="/calculator"
+              className="text-sm text-zinc-500 hover:text-zinc-300"
+            >
+              Calculator
+            </Link>
             <button
               onClick={() => signOut({ callbackUrl: "/login" })}
               className="text-sm text-zinc-500 hover:text-zinc-300"
