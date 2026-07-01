@@ -24,6 +24,15 @@ type Workout = {
   sets: Set[]
 }
 
+type PR = {
+  exerciseName: string
+  category: string
+  weight: number
+  reps: number
+  estimatedOneRepMax: number
+  date: string
+}
+
 const categoryColor: Record<string, string> = {
   push: "text-orange-500",
   pull: "text-sky-400",
@@ -33,6 +42,7 @@ const categoryColor: Record<string, string> = {
 export default function DashboardPage() {
   const [workouts, setWorkouts] = useState<Workout[]>([])
   const [loading, setLoading] = useState(true)
+  const [prs, setPrs] = useState<PR[]>([])
   const router = useRouter()
 
   useEffect(() => {
@@ -49,6 +59,14 @@ export default function DashboardPage() {
           setWorkouts(data)
         }
         setLoading(false)
+      })
+
+    fetch("/api/prs")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setPrs(data)
+        }
       })
   }, [router])
 
@@ -113,6 +131,29 @@ export default function DashboardPage() {
             <p className="text-zinc-500">
               No workouts yet. Log your first one to get started.
             </p>
+          </div>
+        )}
+
+        {prs.length > 0 && (
+          <div className="mt-8 rounded border border-zinc-800 bg-zinc-900/40 p-4">
+            <p className="font-(family-name:--font-dm-mono) mb-3 text-xs uppercase tracking-widest text-zinc-600">
+              Current PRs
+            </p>
+            <div className="space-y-2">
+              {prs.map((pr) => (
+                <div key={pr.exerciseName} className="flex items-center justify-between text-sm">
+                  <p className="text-zinc-300">{pr.exerciseName}</p>
+                  <div className="flex items-center gap-3">
+                    <p className="font-mono text-zinc-500">
+                      {pr.weight}kg × {pr.reps}
+                    </p>
+                    <p className="font-mono text-orange-500">
+                      Est. 1RM {pr.estimatedOneRepMax}kg
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
