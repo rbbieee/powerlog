@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
-import { Bebas_Neue, DM_Mono, DM_Sans } from "next/font/google"
+import { Anton, DM_Mono, DM_Sans } from "next/font/google"
 import "./globals.css"
 
-const bebasNeue = Bebas_Neue({
+const anton = Anton({
   variable: "--font-bebas",
   subsets: ["latin"],
   weight: "400",
@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebasNeue.variable} ${dmMono.variable} ${dmSans.variable} h-full antialiased`}
+      className={`${anton.variable} ${dmMono.variable} ${dmSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-zinc-950 font-(family-name:--font-dm-sans)">
         {children}
