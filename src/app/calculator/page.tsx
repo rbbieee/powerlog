@@ -80,138 +80,143 @@ export default function CalculatorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 px-4 py-10">
-      <div className="mx-auto max-w-lg">
-        <div className="mb-8">
-          <Link
-            href="/dashboard"
-            className="font-mono text-xs uppercase tracking-widest text-zinc-600 hover:text-zinc-400"
-          >
-            ← Dashboard
-          </Link>
-          <p className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-orange-600">
-            PowerLog
+    <div className="flex min-h-screen flex-col bg-zinc-950">
+      <header className="flex items-center justify-between px-8 py-5 md:px-16">
+        <Link href="/dashboard">
+          <p className="font-(family-name:--font-bebas) text-2xl tracking-widest text-orange-600">
+            POWERLOG
           </p>
-          <h1 className="mt-1 text-3xl font-bold text-zinc-50">
-            Strength calculator
+        </Link>
+        <Link
+          href="/dashboard"
+          className="text-sm text-zinc-500 transition hover:text-zinc-200"
+        >
+          ← Dashboard
+        </Link>
+      </header>
+
+      <main className="flex flex-1 items-start justify-center px-8 py-12">
+        <div className="w-full max-w-md">
+          <h1 className="font-(family-name:--font-bebas) text-5xl text-zinc-50">
+            STRENGTH CALCULATOR
           </h1>
-          <p className="mt-2 text-sm text-zinc-500">
-            Based on your current PRs from your workout history
+          <p className="mt-1 text-sm text-zinc-500">
+            Based on your current PRs from your workout history.
           </p>
-        </div>
 
-        {loading && (
-          <p className="text-zinc-500">Loading your PRs...</p>
-        )}
+          {loading && (
+            <p className="mt-8 text-zinc-500">Loading your PRs...</p>
+          )}
 
-        {!loading && (
-          <div className="space-y-6">
-            <div className="rounded border border-zinc-800 bg-zinc-900/40 p-4">
-              <p className="mb-3 font-mono text-xs uppercase tracking-widest text-zinc-600">
-                Your current PRs
-              </p>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <p className="text-zinc-400">Bench Press</p>
-                  <p className="font-mono text-zinc-50">
-                    {getBenchPR() > 0 ? `${getBenchPR()}kg` : "No data"}
-                  </p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="text-zinc-400">Squat</p>
-                  <p className="font-mono text-zinc-50">
-                    {getSquatPR() > 0 ? `${getSquatPR()}kg` : "No data"}
-                  </p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="text-zinc-400">Deadlift</p>
-                  <p className="font-mono text-zinc-50">
-                    {getDeadliftPR() > 0 ? `${getDeadliftPR()}kg` : "No data"}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-zinc-400">
-                  Gender
-                </label>
-                <select
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value as "male" | "female")}
-                  className="mt-1 w-full rounded border border-zinc-800 bg-zinc-900 px-3 py-2 text-zinc-50 outline-none focus:border-orange-600"
-                >
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-zinc-400">
-                  Bodyweight (kg)
-                </label>
-                <input
-                  type="number"
-                  step="0.5"
-                  value={bodyweight}
-                  onChange={(e) => setBodyweight(e.target.value)}
-                  placeholder="e.g. 83"
-                  className="mt-1 w-full rounded border border-zinc-800 bg-zinc-900 px-3 py-2 font-mono text-zinc-50 outline-none focus:border-orange-600"
-                />
-              </div>
-
-              <button
-                onClick={handleCalculate}
-                disabled={!bodyweight || getBenchPR() + getSquatPR() + getDeadliftPR() === 0}
-                className="w-full rounded bg-orange-600 px-3 py-2 font-semibold text-zinc-950 transition hover:bg-orange-500 disabled:opacity-40"
-              >
-                Calculate level
-              </button>
-            </div>
-
-            {result && (
-              <div className="space-y-3">
-                <div className="rounded border border-zinc-800 bg-zinc-900/40 p-4">
-                  <p className="font-mono text-xs uppercase tracking-widest text-zinc-600">
-                    Your level
-                  </p>
-                  <p className={`mt-2 text-4xl font-bold ${levelColor[result.level]}`}>
-                    {result.level}
-                  </p>
-                  <p className="mt-1 text-sm text-zinc-500">
-                    Total {result.total}kg — DOTS {result.dots}
-                  </p>
-                </div>
-
-                <div className="rounded border border-zinc-800 bg-zinc-900/40 p-4">
-                  <p className="font-mono text-xs uppercase tracking-widest text-zinc-600 mb-3">
-                    Breakdown
-                  </p>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <p className="text-zinc-400">Bench Press</p>
-                      <p className="font-mono text-zinc-50">{result.bench}kg</p>
-                    </div>
-                    <div className="flex justify-between">
-                      <p className="text-zinc-400">Squat</p>
-                      <p className="font-mono text-zinc-50">{result.squat}kg</p>
-                    </div>
-                    <div className="flex justify-between">
-                      <p className="text-zinc-400">Deadlift</p>
-                      <p className="font-mono text-zinc-50">{result.deadlift}kg</p>
-                    </div>
-                    <div className="flex justify-between border-t border-zinc-800 pt-2">
-                      <p className="text-zinc-400">Total</p>
-                      <p className="font-mono text-zinc-50">{result.total}kg</p>
-                    </div>
+          {!loading && (
+            <div className="mt-8 space-y-6">
+              <div className="rounded border border-zinc-800 bg-zinc-900/40 p-4">
+                <p className="font-(family-name:--font-dm-mono) mb-3 text-xs uppercase tracking-widest text-zinc-600">
+                  Your current PRs
+                </p>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <p className="text-zinc-500">Bench Press</p>
+                    <p className="font-mono text-zinc-50">
+                      {getBenchPR() > 0 ? `${getBenchPR()}kg` : "No data"}
+                    </p>
+                  </div>
+                  <div className="flex justify-between">
+                    <p className="text-zinc-500">Squat</p>
+                    <p className="font-mono text-zinc-50">
+                      {getSquatPR() > 0 ? `${getSquatPR()}kg` : "No data"}
+                    </p>
+                  </div>
+                  <div className="flex justify-between">
+                    <p className="text-zinc-500">Deadlift</p>
+                    <p className="font-mono text-zinc-50">
+                      {getDeadliftPR() > 0 ? `${getDeadliftPR()}kg` : "No data"}
+                    </p>
                   </div>
                 </div>
               </div>
-            )}
-          </div>
-        )}
-      </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-medium uppercase tracking-widest text-zinc-600">
+                    Gender
+                  </label>
+                  <select
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value as "male" | "female")}
+                    className="mt-2 w-full rounded border border-zinc-800 bg-zinc-900 px-4 py-3 text-zinc-50 outline-none focus:border-orange-600"
+                  >
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium uppercase tracking-widest text-zinc-600">
+                    Bodyweight (kg)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.5"
+                    value={bodyweight}
+                    onChange={(e) => setBodyweight(e.target.value)}
+                    placeholder="e.g. 83"
+                    className="mt-2 w-full rounded border border-zinc-800 bg-zinc-900 px-4 py-3 font-mono text-zinc-50 outline-none focus:border-orange-600"
+                  />
+                </div>
+
+                <button
+                  onClick={handleCalculate}
+                  disabled={!bodyweight || getBenchPR() + getSquatPR() + getDeadliftPR() === 0}
+                  className="w-full rounded bg-orange-600 py-3 font-semibold text-zinc-950 transition hover:bg-orange-500 disabled:opacity-40"
+                >
+                  Calculate level
+                </button>
+              </div>
+
+              {result && (
+                <div className="space-y-3">
+                  <div className="rounded border border-zinc-800 bg-zinc-900/40 p-4">
+                    <p className="font-(family-name:--font-dm-mono) text-xs uppercase tracking-widest text-zinc-600">
+                      Your level
+                    </p>
+                    <p className={`font-(family-name:--font-bebas) mt-2 text-6xl ${levelColor[result.level]}`}>
+                      {result.level.toUpperCase()}
+                    </p>
+                    <p className="font-(family-name:--font-dm-mono) mt-1 text-sm text-zinc-500">
+                      Total {result.total}kg · DOTS {result.dots}
+                    </p>
+                  </div>
+
+                  <div className="rounded border border-zinc-800 bg-zinc-900/40 p-4">
+                    <p className="font-(family-name:--font-dm-mono) mb-3 text-xs uppercase tracking-widest text-zinc-600">
+                      Breakdown
+                    </p>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <p className="text-zinc-500">Bench Press</p>
+                        <p className="font-mono text-zinc-50">{result.bench}kg</p>
+                      </div>
+                      <div className="flex justify-between">
+                        <p className="text-zinc-500">Squat</p>
+                        <p className="font-mono text-zinc-50">{result.squat}kg</p>
+                      </div>
+                      <div className="flex justify-between">
+                        <p className="text-zinc-500">Deadlift</p>
+                        <p className="font-mono text-zinc-50">{result.deadlift}kg</p>
+                      </div>
+                      <div className="flex justify-between border-t border-zinc-800 pt-2">
+                        <p className="text-zinc-500">Total</p>
+                        <p className="font-mono text-zinc-50">{result.total}kg</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </main>
     </div>
   )
 }

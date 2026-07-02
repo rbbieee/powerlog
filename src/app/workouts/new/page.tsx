@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 type Exercise = {
   id: string
@@ -83,118 +84,134 @@ export default function NewWorkoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 px-4 py-10">
-      <form onSubmit={handleSubmit} className="mx-auto max-w-lg space-y-6">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-orange-600">
-            PowerLog
+    <div className="flex min-h-screen flex-col bg-zinc-950">
+      <header className="flex items-center justify-between px-8 py-5 md:px-16">
+        <Link href="/dashboard">
+          <p className="font-(family-name:--font-bebas) text-2xl tracking-widest text-orange-600">
+            POWERLOG
           </p>
-          <h1 className="mt-1 text-2xl font-bold text-zinc-50">
-            Log a workout
+        </Link>
+        <Link
+          href="/dashboard"
+          className="text-sm text-zinc-500 transition hover:text-zinc-200"
+        >
+          ← Dashboard
+        </Link>
+      </header>
+
+      <main className="flex flex-1 items-start justify-center px-8 py-12">
+        <div className="w-full max-w-md">
+          <h1 className="font-(family-name:--font-bebas) text-5xl text-zinc-50">
+            LOG A WORKOUT
           </h1>
-        </div>
-
-        {error && (
-          <p className="rounded border border-red-900 bg-red-950 px-3 py-2 text-sm text-red-400">
-            {error}
+          <p className="mt-1 text-sm text-zinc-500">
+            Add your sets for today's session.
           </p>
-        )}
 
-        <div>
-          <label className="block text-sm font-medium text-zinc-400">
-            Note (optional)
-          </label>
-          <input
-            type="text"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            placeholder="Push day, felt strong today"
-            className="mt-1 w-full rounded border border-zinc-800 bg-zinc-900 px-3 py-2 text-zinc-50 outline-none focus:border-orange-600"
-          />
-        </div>
+          {error && (
+            <p className="mt-4 rounded border border-red-900 bg-red-950 px-3 py-2 text-sm text-red-400">
+              {error}
+            </p>
+          )}
 
-        <div className="space-y-4">
-          {sets.map((set, index) => (
-            <div
-              key={index}
-              className="space-y-3 rounded border border-zinc-800 bg-zinc-900 p-4"
-            >
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-zinc-400">
-                  Set {set.setNumber}
-                </p>
-                {sets.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeSet(index)}
-                    className="text-xs text-red-400 hover:text-red-300"
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
-
-              <select
-                required
-                value={set.exerciseId}
-                onChange={(e) => updateSet(index, "exerciseId", e.target.value)}
-                className="w-full rounded border border-zinc-800 bg-zinc-950 px-3 py-2 text-zinc-50 outline-none focus:border-orange-600"
-              >
-                <option value="">Select exercise</option>
-                {exercises.map((exercise) => (
-                  <option key={exercise.id} value={exercise.id}>
-                    {exercise.name}
-                  </option>
-                ))}
-              </select>
-
-              <div className="grid grid-cols-3 gap-2">
-                <input
-                  type="number"
-                  step="0.5"
-                  required
-                  placeholder="Weight (kg)"
-                  value={set.weight}
-                  onChange={(e) => updateSet(index, "weight", e.target.value)}
-                  className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2 font-mono text-zinc-50 outline-none focus:border-orange-600"
-                />
-                <input
-                  type="number"
-                  required
-                  placeholder="Reps"
-                  value={set.reps}
-                  onChange={(e) => updateSet(index, "reps", e.target.value)}
-                  className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2 font-mono text-zinc-50 outline-none focus:border-orange-600"
-                />
-                <input
-                  type="number"
-                  step="0.5"
-                  placeholder="RPE"
-                  value={set.rpe}
-                  onChange={(e) => updateSet(index, "rpe", e.target.value)}
-                  className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2 font-mono text-zinc-50 outline-none focus:border-orange-600"
-                />
-              </div>
+          <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+            <div>
+              <label className="block text-xs font-medium uppercase tracking-widest text-zinc-600">
+                Note (optional)
+              </label>
+              <input
+                type="text"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                placeholder="Push day, felt strong today"
+                className="mt-2 w-full rounded border border-zinc-800 bg-zinc-900 px-4 py-3 text-zinc-50 outline-none focus:border-orange-600"
+              />
             </div>
-          ))}
+
+            <div className="space-y-3">
+              {sets.map((set, index) => (
+                <div
+                  key={index}
+                  className="rounded border border-zinc-800 bg-zinc-900/60 p-4"
+                >
+                  <div className="mb-3 flex items-center justify-between">
+                    <p className="font-(family-name:--font-dm-mono) text-xs uppercase tracking-widest text-zinc-600">
+                      Set {set.setNumber}
+                    </p>
+                    {sets.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeSet(index)}
+                        className="text-xs text-zinc-600 hover:text-red-400"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+
+                  <select
+                    required
+                    value={set.exerciseId}
+                    onChange={(e) => updateSet(index, "exerciseId", e.target.value)}
+                    className="w-full rounded border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-zinc-50 outline-none focus:border-orange-600"
+                  >
+                    <option value="">Select exercise</option>
+                    {exercises.map((exercise) => (
+                      <option key={exercise.id} value={exercise.id}>
+                        {exercise.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <div className="mt-2 grid grid-cols-3 gap-2">
+                    <input
+                      type="number"
+                      step="0.5"
+                      required
+                      placeholder="Weight (kg)"
+                      value={set.weight}
+                      onChange={(e) => updateSet(index, "weight", e.target.value)}
+                      className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2.5 font-mono text-zinc-50 outline-none focus:border-orange-600"
+                    />
+                    <input
+                      type="number"
+                      required
+                      placeholder="Reps"
+                      value={set.reps}
+                      onChange={(e) => updateSet(index, "reps", e.target.value)}
+                      className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2.5 font-mono text-zinc-50 outline-none focus:border-orange-600"
+                    />
+                    <input
+                      type="number"
+                      step="0.5"
+                      placeholder="RPE"
+                      value={set.rpe}
+                      onChange={(e) => updateSet(index, "rpe", e.target.value)}
+                      className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2.5 font-mono text-zinc-50 outline-none focus:border-orange-600"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={addSet}
+              className="w-full rounded border border-zinc-800 py-2.5 text-sm text-zinc-500 transition hover:border-orange-600 hover:text-orange-500"
+            >
+              + Add another set
+            </button>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded bg-orange-600 py-3 font-semibold text-zinc-950 transition hover:bg-orange-500 disabled:opacity-50"
+            >
+              {loading ? "Saving..." : "Save workout"}
+            </button>
+          </form>
         </div>
-
-        <button
-          type="button"
-          onClick={addSet}
-          className="w-full rounded border border-zinc-800 px-3 py-2 text-sm text-zinc-400 hover:border-orange-600 hover:text-orange-500"
-        >
-          + Add another set
-        </button>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded bg-orange-600 px-3 py-2 font-semibold text-zinc-950 transition hover:bg-orange-500 disabled:opacity-50"
-        >
-          {loading ? "Saving..." : "Save workout"}
-        </button>
-      </form>
+      </main>
     </div>
   )
 }
