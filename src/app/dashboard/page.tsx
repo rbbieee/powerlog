@@ -91,51 +91,51 @@ export default function DashboardPage() {
   )
 
   return (
-    <div className="min-h-screen bg-zinc-950 px-4 py-10">
-      <div className="mx-auto max-w-2xl">
-        <div className="mb-2 flex items-end justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-600">
-              PowerLog
+    <div className="min-h-screen bg-zinc-950">
+      <header className="flex items-center justify-between px-8 py-5 md:px-16">
+        <p className="font-(family-name:--font-bebas) text-2xl tracking-widest text-orange-600">
+          POWERLOG
+        </p>
+        <div className="flex items-center gap-6">
+          <Link
+            href="/workouts/new"
+            className="rounded bg-orange-600 px-5 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-orange-500"
+          >
+            + Log workout
+          </Link>
+          <Link
+            href="/calculator"
+            className="text-sm text-zinc-500 transition hover:text-zinc-200"
+          >
+            Calculator
+          </Link>
+          <button
+            onClick={() => signOut({ callbackUrl: "/login" })}
+            className="text-sm text-zinc-500 transition hover:text-zinc-200"
+          >
+            Log out
+          </button>
+        </div>
+      </header>
+
+      <main className="px-8 pb-16 md:px-16">
+        <div className="mb-8 border-b border-zinc-800 pb-6">
+          <h1 className="font-(family-name:--font-bebas) text-5xl text-zinc-50">
+            YOUR WORKOUTS
+          </h1>
+          {!loading && workouts.length > 0 && (
+            <p className="font-(family-name:--font-dm-mono) mt-1 text-sm text-zinc-600">
+              {workouts.length} session{workouts.length !== 1 ? "s" : ""} logged · {totalVolume.toLocaleString()}kg total volume
             </p>
-            <h1 className="mt-1 text-3xl font-bold text-zinc-50">
-              Your workouts
-            </h1>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/workouts/new"
-              className="rounded bg-orange-600 px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-orange-500"
-            >
-              + Log workout
-            </Link>
-            <Link
-              href="/calculator"
-              className="text-sm text-zinc-500 hover:text-zinc-300"
-            >
-              Calculator
-            </Link>
-            <button
-              onClick={() => signOut({ callbackUrl: "/login" })}
-              className="text-sm text-zinc-500 hover:text-zinc-300"
-            >
-              Log out
-            </button>
-          </div>
+          )}
         </div>
 
-        {!loading && workouts.length > 0 && (
-          <p className="mb-8 font-mono text-sm text-zinc-600">
-            {workouts.length} session{workouts.length !== 1 ? "s" : ""} logged · {totalVolume.toLocaleString()}kg total volume
-          </p>
-        )}
-
         {loading && (
-          <p className="mt-8 text-zinc-500">Loading...</p>
+          <p className="text-zinc-500">Loading...</p>
         )}
 
         {!loading && workouts.length === 0 && (
-          <div className="mt-8 rounded border border-dashed border-zinc-800 px-6 py-10 text-center">
+          <div className="rounded border border-dashed border-zinc-800 px-8 py-16">
             <p className="text-zinc-500">
               No workouts yet. Log your first one to get started.
             </p>
@@ -143,55 +143,73 @@ export default function DashboardPage() {
         )}
 
         {workouts.length > 0 && (
-          <div className="mt-8 space-y-3">
+          <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
             <VolumeChart workouts={workouts} />
             <OneRMChart workouts={workouts} />
           </div>
         )}
 
         {prs.length > 0 && (
-          <div className="mt-8 rounded border border-zinc-800 bg-zinc-900/40 p-4">
+          <div className="mb-8">
             <p className="font-(family-name:--font-dm-mono) mb-3 text-xs uppercase tracking-widest text-zinc-600">
               Current PRs
             </p>
-            <div className="space-y-2">
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
               {prs.map((pr) => (
-                <div key={pr.exerciseName} className="flex items-center justify-between text-sm">
-                  <p className="text-zinc-300">{pr.exerciseName}</p>
-                  <div className="flex items-center gap-3">
-                    <p className="font-mono text-zinc-500">
-                      {pr.weight}kg × {pr.reps}
-                    </p>
-                    <p className="font-mono text-orange-500">
-                      Est. 1RM {pr.estimatedOneRepMax}kg
-                    </p>
-                  </div>
+                <div
+                  key={pr.exerciseName}
+                  className="rounded border border-zinc-800 bg-zinc-900/40 px-4 py-3"
+                >
+                  <p className="text-sm text-zinc-400">{pr.exerciseName}</p>
+                  <p className="font-(family-name:--font-bebas) mt-1 text-3xl text-zinc-50">
+                    {pr.estimatedOneRepMax}kg
+                  </p>
+                  <p className="font-(family-name:--font-dm-mono) text-xs text-zinc-600">
+                    Est. 1RM · {pr.weight}kg × {pr.reps}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        <div className="mt-8 space-y-3">
-          {workouts.map((workout) => (
-            <div
-              key={workout.id}
-              className="rounded border border-zinc-800 bg-zinc-900/60 p-4 transition hover:border-zinc-700"
-            >
-              <div className="mb-3 flex items-center justify-between">
-                <p className="font-mono text-xs uppercase tracking-wide text-zinc-500">
-                  {new Date(workout.date).toLocaleDateString("en-US", {
-                    weekday: "short",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </p>
-                <div className="flex items-center gap-3">
-                  {workout.note && (
-                    <span className="rounded border border-orange-900 bg-orange-950/50 px-2 py-0.5 text-xs font-semibold text-orange-400">
-                      {workout.note}
-                    </span>
-                  )}
+        <div>
+          <p className="font-(family-name:--font-dm-mono) mb-3 text-xs uppercase tracking-widest text-zinc-600">
+            Session history
+          </p>
+          <div className="space-y-2">
+            {workouts.map((workout) => (
+              <div
+                key={workout.id}
+                className="flex items-start justify-between rounded border border-zinc-800 bg-zinc-900/40 px-4 py-3 transition hover:border-zinc-700"
+              >
+                <div className="flex-1">
+                  <div className="flex items-center gap-3">
+                    <p className="font-(family-name:--font-dm-mono) text-xs uppercase tracking-wide text-zinc-500">
+                      {new Date(workout.date).toLocaleDateString("en-US", {
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </p>
+                    {workout.note && (
+                      <span className="rounded border border-orange-900 bg-orange-950/50 px-2 py-0.5 text-xs font-semibold text-orange-400">
+                        {workout.note}
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+                    {workout.sets.map((set) => (
+                      <p key={set.id} className="font-(family-name:--font-dm-mono) text-xs text-zinc-500">
+                        <span className={categoryColor[set.exercise.category] || "text-zinc-600"}>
+                          ●
+                        </span>{" "}
+                        {set.exercise.name} {set.weight}kg×{set.reps}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+                <div className="ml-4 flex items-center gap-3 pt-0.5">
                   <Link
                     href={`/workouts/${workout.id}/edit`}
                     className="text-xs text-zinc-600 hover:text-orange-500"
@@ -206,30 +224,10 @@ export default function DashboardPage() {
                   </button>
                 </div>
               </div>
-
-              <div className="space-y-1.5">
-                {workout.sets.map((set) => (
-                  <div
-                    key={set.id}
-                    className="flex items-center justify-between text-sm"
-                  >
-                    <p className="text-zinc-300">
-                      <span className={categoryColor[set.exercise.category] || "text-zinc-500"}>
-                        ●
-                      </span>{" "}
-                      {set.exercise.name}
-                    </p>
-                    <p className="font-mono text-zinc-400">
-                      {set.weight}kg <span className="text-zinc-600">×</span> {set.reps}
-                      {set.rpe && <span className="text-zinc-600"> @{set.rpe}</span>}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   )
 }
