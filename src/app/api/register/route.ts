@@ -1,8 +1,22 @@
 import { NextResponse } from "next/server"
 import bcrypt from "bcrypt"
 import { prisma } from "@/lib/db"
+import { registerRateLimiter } from "@/lib/rateLimiter"
+import { headers } from "next/headers"
 
 export async function POST(request: Request) {
+  const headersList = await headers()
+  const ip = headersList.get("x-forwarded-for") ?? "unknown"
+
+  try {
+    await registerRateLimiter.consume(ip)
+  } catch {
+    return NextResponse.json(
+      { error: "Too many requests, please try again later" },
+      { status: 429 }
+    )
+  }
+
   const body = await request.json()
   const { email, password } = body
 
