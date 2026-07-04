@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import bcrypt from "bcrypt"
 import { prisma } from "@/lib/db"
+import { loginRateLimiter } from "@/lib/rateLimiter"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -10,7 +11,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: {},
         password: {},
       },
-      authorize: async (credentials) => {
+      authorize: async (credentials, request) => {
+        const ip = request?.headers?.get("x-forwarded-for") ?? "unknown"
+
+        try {
+          await loginRateLimiter.consume(ip)
+        } catch {
+          throw new Error("Too many login attempts, please try again later")
+        }
+
         if (!credentials?.email || !credentials?.password) {
           return null
         }
