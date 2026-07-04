@@ -11,9 +11,17 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [attempts, setAttempts] = useState(0)
+  const [blocked, setBlocked] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (blocked) {
+      setError("Too many login attempts. Please wait a minute and try again.")
+      return
+    }
+
     setError("")
     setLoading(true)
 
@@ -24,7 +32,20 @@ export default function LoginPage() {
     })
 
     if (result?.error) {
-      setError("Invalid email or password")
+      const newAttempts = attempts + 1
+      setAttempts(newAttempts)
+
+      if (newAttempts >= 5) {
+        setBlocked(true)
+        setError("Too many login attempts. Please wait a minute and try again.")
+        setTimeout(() => {
+          setBlocked(false)
+          setAttempts(0)
+        }, 60000)
+      } else {
+        setError(`Invalid email or password (${newAttempts}/5 attempts)`)
+      }
+
       setLoading(false)
       return
     }
@@ -73,7 +94,8 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-2 w-full rounded border border-zinc-800 bg-zinc-900 px-4 py-3 text-zinc-50 outline-none focus:border-orange-600"
+                disabled={blocked}
+                className="mt-2 w-full rounded border border-zinc-800 bg-zinc-900 px-4 py-3 text-zinc-50 outline-none focus:border-orange-600 disabled:opacity-50"
               />
             </div>
 
@@ -86,16 +108,17 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-2 w-full rounded border border-zinc-800 bg-zinc-900 px-4 py-3 text-zinc-50 outline-none focus:border-orange-600"
+                disabled={blocked}
+                className="mt-2 w-full rounded border border-zinc-800 bg-zinc-900 px-4 py-3 text-zinc-50 outline-none focus:border-orange-600 disabled:opacity-50"
               />
             </div>
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || blocked}
               className="w-full rounded bg-orange-600 px-4 py-3 font-semibold text-zinc-950 transition hover:bg-orange-500 disabled:opacity-50"
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? "Signing in..." : blocked ? "Too many attempts" : "Sign in"}
             </button>
           </form>
 
