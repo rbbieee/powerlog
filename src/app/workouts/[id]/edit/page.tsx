@@ -106,71 +106,79 @@ export default function EditWorkoutPage() {
 
   if (fetching) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-950">
-        <p className="text-zinc-500">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-black">
+        <div className="h-6 w-6 rounded-full border-2 border-zinc-800 border-t-red-500 animate-spin"></div>
       </div>
     )
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-950">
-      <header className="flex items-center justify-between px-8 py-5 md:px-16">
-        <Link href="/dashboard">
-          <p className="font-(family-name:--font-bebas) text-2xl tracking-widest text-orange-600">
-            POWERLOG
-          </p>
-        </Link>
-        <Link
-          href="/dashboard"
-          className="text-sm text-zinc-500 transition hover:text-zinc-200"
-        >
-          ← Dashboard
-        </Link>
+    <div className="flex min-h-screen flex-col bg-black selection:bg-red-500/30">
+      <header className="sticky top-0 z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
+        <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto w-full">
+          <Link href="/dashboard">
+            <p className="font-semibold text-lg tracking-tight text-white flex items-center gap-2 transition-opacity hover:opacity-80">
+              <span className="w-3 h-3 rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"></span>
+              PowerLog
+            </p>
+          </Link>
+          <Link
+            href="/dashboard"
+            className="text-sm font-medium text-zinc-400 transition-colors hover:text-white"
+          >
+            ← Back to Dashboard
+          </Link>
+        </div>
       </header>
 
-      <main className="flex flex-1 items-start justify-center px-8 py-12">
-        <div className="w-full max-w-md">
-          <h1 className="font-(family-name:--font-bebas) text-5xl text-zinc-50">
-            EDIT WORKOUT
-          </h1>
-          <p className="mt-1 text-sm text-zinc-500">
-            Update your sets for this session.
-          </p>
+      <main className="flex flex-1 items-start justify-center px-6 py-12">
+        <div className="w-full max-w-lg">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold tracking-tight text-white">
+              Edit Workout
+            </h1>
+            <p className="mt-2 text-sm text-zinc-400">
+              Update your sets for this session.
+            </p>
+          </div>
 
           {error && (
-            <p className="mt-4 rounded border border-red-900 bg-red-950 px-3 py-2 text-sm text-red-400">
-              {error}
-            </p>
+            <div className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400 flex items-start gap-2">
+              <svg className="w-5 h-5 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>{error}</span>
+            </div>
           )}
 
-          <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-            <div>
-              <label className="block text-xs font-medium uppercase tracking-widest text-zinc-600">
-                Note (optional)
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="glass-panel p-6">
+              <label className="block text-xs font-medium uppercase tracking-wider text-zinc-500 mb-2">
+                Session Note (optional)
               </label>
               <input
                 type="text"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                className="mt-2 w-full rounded border border-zinc-800 bg-zinc-900 px-4 py-3 text-zinc-50 outline-none focus:border-orange-600"
+                className="w-full rounded-xl border border-white/10 bg-zinc-900/50 px-4 py-3 text-white outline-none transition-colors focus:border-red-500 focus:bg-zinc-900"
               />
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {sets.map((set, index) => (
                 <div
                   key={index}
-                  className="rounded border border-zinc-800 bg-zinc-900/60 p-4"
+                  className="glass-panel p-5 transition-all"
                 >
-                  <div className="mb-3 flex items-center justify-between">
-                    <p className="font-(family-name:--font-dm-mono) text-xs uppercase tracking-widest text-zinc-600">
+                  <div className="mb-4 flex items-center justify-between">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-red-400">
                       Set {set.setNumber}
                     </p>
                     {sets.length > 1 && (
                       <button
                         type="button"
                         onClick={() => removeSet(index)}
-                        className="text-xs text-zinc-600 hover:text-red-400"
+                        className="text-xs font-medium text-zinc-500 transition-colors hover:text-red-500"
                       >
                         Remove
                       </button>
@@ -181,9 +189,9 @@ export default function EditWorkoutPage() {
                     required
                     value={set.exerciseId}
                     onChange={(e) => updateSet(index, "exerciseId", e.target.value)}
-                    className="w-full rounded border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-zinc-50 outline-none focus:border-orange-600"
+                    className="w-full rounded-xl border border-white/10 bg-zinc-900/50 px-4 py-3 text-white outline-none transition-colors focus:border-red-500 focus:bg-zinc-900 appearance-none"
                   >
-                    <option value="">Select exercise</option>
+                    <option value="" disabled className="text-zinc-500">Select exercise</option>
                     {exercises.map((exercise) => (
                       <option key={exercise.id} value={exercise.id}>
                         {exercise.name}
@@ -191,32 +199,41 @@ export default function EditWorkoutPage() {
                     ))}
                   </select>
 
-                  <div className="mt-2 grid grid-cols-3 gap-2">
-                    <input
-                      type="number"
-                      step="0.5"
-                      required
-                      placeholder="Weight (kg)"
-                      value={set.weight}
-                      onChange={(e) => updateSet(index, "weight", e.target.value)}
-                      className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2.5 font-mono text-zinc-50 outline-none focus:border-orange-600"
-                    />
-                    <input
-                      type="number"
-                      required
-                      placeholder="Reps"
-                      value={set.reps}
-                      onChange={(e) => updateSet(index, "reps", e.target.value)}
-                      className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2.5 font-mono text-zinc-50 outline-none focus:border-orange-600"
-                    />
-                    <input
-                      type="number"
-                      step="0.5"
-                      placeholder="RPE"
-                      value={set.rpe}
-                      onChange={(e) => updateSet(index, "rpe", e.target.value)}
-                      className="rounded border border-zinc-800 bg-zinc-950 px-3 py-2.5 font-mono text-zinc-50 outline-none focus:border-orange-600"
-                    />
+                  <div className="mt-3 grid grid-cols-3 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-medium uppercase tracking-wider text-zinc-500 mb-1 ml-1">Weight</label>
+                      <input
+                        type="number"
+                        step="0.5"
+                        required
+                        placeholder="kg"
+                        value={set.weight}
+                        onChange={(e) => updateSet(index, "weight", e.target.value)}
+                        className="w-full rounded-xl border border-white/10 bg-zinc-900/50 px-4 py-3 font-mono text-white outline-none transition-colors focus:border-red-500 focus:bg-zinc-900 placeholder-zinc-600"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-medium uppercase tracking-wider text-zinc-500 mb-1 ml-1">Reps</label>
+                      <input
+                        type="number"
+                        required
+                        placeholder="#"
+                        value={set.reps}
+                        onChange={(e) => updateSet(index, "reps", e.target.value)}
+                        className="w-full rounded-xl border border-white/10 bg-zinc-900/50 px-4 py-3 font-mono text-white outline-none transition-colors focus:border-red-500 focus:bg-zinc-900 placeholder-zinc-600"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-medium uppercase tracking-wider text-zinc-500 mb-1 ml-1">RPE</label>
+                      <input
+                        type="number"
+                        step="0.5"
+                        placeholder="1-10"
+                        value={set.rpe}
+                        onChange={(e) => updateSet(index, "rpe", e.target.value)}
+                        className="w-full rounded-xl border border-white/10 bg-zinc-900/50 px-4 py-3 font-mono text-white outline-none transition-colors focus:border-red-500 focus:bg-zinc-900 placeholder-zinc-600"
+                      />
+                    </div>
                   </div>
                 </div>
               ))}
@@ -225,7 +242,7 @@ export default function EditWorkoutPage() {
             <button
               type="button"
               onClick={addSet}
-              className="w-full rounded border border-zinc-800 py-2.5 text-sm text-zinc-500 transition hover:border-orange-600 hover:text-orange-500"
+              className="w-full rounded-xl border border-dashed border-white/20 bg-zinc-900/30 py-4 text-sm font-medium text-zinc-400 transition-colors hover:border-red-500/50 hover:text-red-400 hover:bg-zinc-900/50"
             >
               + Add another set
             </button>
@@ -233,9 +250,9 @@ export default function EditWorkoutPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded bg-orange-600 py-3 font-semibold text-zinc-950 transition hover:bg-orange-500 disabled:opacity-50"
+              className="w-full rounded-xl bg-red-600 py-4 font-medium text-white shadow-[0_0_15px_rgba(220,38,38,0.25)] transition-all hover:bg-red-500 hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] disabled:pointer-events-none disabled:opacity-50"
             >
-              {loading ? "Saving..." : "Save changes"}
+              {loading ? "Saving..." : "Save Changes"}
             </button>
           </form>
         </div>
