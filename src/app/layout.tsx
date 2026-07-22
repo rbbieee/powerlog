@@ -1,21 +1,9 @@
 import type { Metadata } from "next"
-import { Anton, DM_Mono, DM_Sans } from "next/font/google"
+import { Inter } from "next/font/google"
 import "./globals.css"
 
-const anton = Anton({
-  variable: "--font-bebas",
-  subsets: ["latin"],
-  weight: "400",
-})
-
-const dmMono = DM_Mono({
-  variable: "--font-dm-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-})
-
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 })
 
@@ -32,9 +20,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${anton.variable} ${dmMono.variable} ${dmSans.variable} h-full antialiased`}
+      className={`${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-zinc-950 font-(family-name:--font-dm-sans)">
+      <body className="min-h-full flex flex-col bg-black font-sans text-zinc-100 selection:bg-red-500/30">
         {children}
       </body>
     </html>
