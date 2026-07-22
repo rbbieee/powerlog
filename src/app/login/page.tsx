@@ -54,39 +54,43 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-950">
-      <header className="flex items-center justify-between px-8 py-5 md:px-16">
+    <div className="flex min-h-screen flex-col bg-black selection:bg-red-500/30">
+      <header className="flex items-center justify-between px-6 py-6 md:px-12 max-w-7xl mx-auto w-full">
         <Link href="/">
-          <p className="font-(family-name:--font-bebas) text-2xl tracking-widest text-orange-600">
-            POWERLOG
+          <p className="font-semibold text-lg tracking-tight text-white flex items-center gap-2 transition-opacity hover:opacity-80">
+            <span className="w-3 h-3 rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"></span>
+            PowerLog
           </p>
         </Link>
         <Link
           href="/register"
-          className="text-sm text-zinc-500 transition hover:text-zinc-200"
+          className="text-sm font-medium text-zinc-400 transition-colors hover:text-white"
         >
           Create account
         </Link>
       </header>
 
-      <main className="flex flex-1 items-center justify-center px-8 py-16">
-        <div className="w-full max-w-sm">
-          <h1 className="font-(family-name:--font-bebas) text-5xl text-zinc-50">
-            SIGN IN
+      <main className="flex flex-1 items-center justify-center px-6 py-16">
+        <div className="w-full max-w-sm glass-panel p-8">
+          <h1 className="text-3xl font-bold tracking-tight text-white">
+            Sign In
           </h1>
-          <p className="mt-2 text-sm text-zinc-500">
+          <p className="mt-2 text-sm text-zinc-400">
             Welcome back. Log in to see your workouts.
           </p>
 
           {error && (
-            <p className="mt-4 rounded border border-red-900 bg-red-950 px-3 py-2 text-sm text-red-400">
-              {error}
-            </p>
+            <div className="mt-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400 flex items-start gap-2">
+              <svg className="w-5 h-5 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>{error}</span>
+            </div>
           )}
 
-          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <div>
-              <label className="block text-xs font-medium uppercase tracking-widest text-zinc-600">
+              <label className="block text-xs font-medium uppercase tracking-wider text-zinc-500 mb-2">
                 Email
               </label>
               <input
@@ -95,12 +99,12 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={blocked}
-                className="mt-2 w-full rounded border border-zinc-800 bg-zinc-900 px-4 py-3 text-zinc-50 outline-none focus:border-orange-600 disabled:opacity-50"
+                className="w-full rounded-xl border border-white/10 bg-zinc-900/50 px-4 py-3 text-white outline-none transition-colors focus:border-red-500 focus:bg-zinc-900 disabled:opacity-50"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium uppercase tracking-widest text-zinc-600">
+              <label className="block text-xs font-medium uppercase tracking-wider text-zinc-500 mb-2">
                 Password
               </label>
               <input
@@ -109,22 +113,22 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={blocked}
-                className="mt-2 w-full rounded border border-zinc-800 bg-zinc-900 px-4 py-3 text-zinc-50 outline-none focus:border-orange-600 disabled:opacity-50"
+                className="w-full rounded-xl border border-white/10 bg-zinc-900/50 px-4 py-3 text-white outline-none transition-colors focus:border-red-500 focus:bg-zinc-900 disabled:opacity-50"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading || blocked}
-              className="w-full rounded bg-orange-600 px-4 py-3 font-semibold text-zinc-950 transition hover:bg-orange-500 disabled:opacity-50"
+              className="mt-2 w-full rounded-xl bg-red-600 px-4 py-3.5 font-medium text-white shadow-[0_0_15px_rgba(220,38,38,0.25)] transition-all hover:bg-red-500 hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] disabled:pointer-events-none disabled:opacity-50 disabled:scale-100"
             >
               {loading ? "Signing in..." : blocked ? "Too many attempts" : "Sign in"}
             </button>
           </form>
 
-          <p className="mt-6 text-sm text-zinc-600">
+          <p className="mt-6 text-center text-sm text-zinc-500">
             Don't have an account?{" "}
-            <Link href="/register" className="text-zinc-400 hover:text-zinc-50">
+            <Link href="/register" className="font-medium text-white transition-colors hover:text-red-400">
               Create one
             </Link>
           </p>
